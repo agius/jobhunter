@@ -17,15 +17,18 @@ module.exports = function(app) {
   });
 
   app.get('/api/job/:job_id', function(req, res) {
-    Job.findById(req.params.job_id, function(err, job) {
+    Job.findById(req.param('job_id'), function(err, job) {
       if (err) res.send(err);
       res.json(job); // return all nerds in JSON format
     });
   });
 
   app.post('/api/jobs', function(req, res){
+    var now = new Date().getTime();
     var job = new Job();
     job.name = req.body.name;
+    job.createdAt = now;
+    job.updatedAt = now;
 
     job.save(function(err, job){
       if (err) req.send(err);
@@ -36,9 +39,14 @@ module.exports = function(app) {
   });
 
   app.put('/api/jobs/:job_id', function(req, res){
-    Job.findById(req.params.job_id, function(err, job){
+    Job.findById(req.param('job_id'), function(err, job){
       if(err) res.send(err);
+      console.log(req.body);
       job.name = req.body.name;
+      job.state = req.body.state;
+      job.link = req.body.link;
+      job.notes = req.body.notes;
+      job.updatedAt = new Date().getTime();
       job.save(function(err){
         if(err) req.send(err);
         res.json(job);
@@ -47,7 +55,7 @@ module.exports = function(app) {
   });
 
   app.delete('/api/jobs/:job_id', function(req, res){
-    Job.remove({ _id: req.params.job_id}, function(err, job){
+    Job.remove({ _id: req.param('job_id')}, function(err, job){
       if(err) res.send(err);
       res.json(job);
     });

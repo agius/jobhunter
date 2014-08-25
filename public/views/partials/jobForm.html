@@ -1,0 +1,57 @@
+<div ng-controller="JobController">
+  <div class="row">
+    <div class="col-md-12">
+      <h2><a href='#' editable-text="job.name">{{ job.name || 'Mystery Job' }}</a></h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="job-state" ng-switch="job.state">
+        <div class="job-emailed" ng-switch-default>
+          <div class="job-emailed-partial" ng-include="'views/partials/jobEmailed.html'"></div>
+        </div>
+        <div class="job-responded" ng-switch-when="responded">
+          <div class="job-emailed-partial" ng-include="'views/partials/jobResponded.html'"></div>
+        </div>
+        <div class="job-responded" ng-switch-when="interview">
+          <div class="job-emailed-partial" ng-include="'views/partials/jobInterview.html'"></div>
+        </div>
+        <div class="job-responded" ng-switch-when="offered">
+          <div class="job-emailed-partial" ng-include="'views/partials/jobOffered.html'"></div>
+        </div>
+        <div class="job-responded" ng-switch-when="accepted">
+          <div class="job-emailed-partial" ng-include="'views/partials/jobAccepted.html'"></div>
+        </div>
+      </div>
+    </div> <!-- end .col-md -->
+
+    <div class="col-md-6">
+      <div class='pull-right'>
+        <button type="button" class="btn btn-xs btn-danger" ng-click="deleteJob(job._id)">
+          Delete
+        </button>
+      </div>
+      <div class="form-group">
+        <a href="{{ job.link }}" target="_blank" ng-if="job.link && !isEditing('link')">{{ job.link }}</a>
+        <a href="#" editable-url="job.link" onshow="toggleEditing('link')" onhide="toggleEditing('link')">
+          <span class="glyphicon glyphicon-pencil" ng-if="job.link"></span>
+          <span ng-if="!job.link">Link to Job Post</span>
+        </a>
+      </div>
+      
+      <div class="form-group">
+        <p>
+          <span ng-if="!isEditing('notes')">
+            {{ job.notes }}
+          </span>
+          <a href='#' editable-textarea="job.notes" e-rows="4" e-cols="40" 
+                      onshow="toggleEditing('notes')" onhide="toggleEditing('notes')">
+            <span class="glyphicon glyphicon-pencil" ng-if="job.notes"></span>
+            <span ng-if="!job.notes">Add Notes</span>
+          </a>
+        </p>
+      </div>
+    </div> <!-- end .col -->
+
+  </div> <!-- end .row -->
+</div>

@@ -1,35 +1,57 @@
 angular.module('JobCtrl', [])
-  .controller('JobController', function($scope, $http, $filter) {
-    $scope.formData = {};
-    $http.get('/api/jobs')
-      .success(function(data){
-        $scope.jobs = data;
-        console.log(data);
-      })
-      .error(function(data){
-        console.log("error: " + data);
-      });
+  .controller('JobController', function($scope, $http, $timeout) {
 
-    $scope.createJob = function(){
-      $http.post('/api/jobs', $scope.formData)
+    var timeout = null;
+    var secondsToWaitBeforeSave = 2;
+    var isUpdateFromServer = false;
+
+    $scope.editing = [];
+
+    $scope.isEditing = function(field){
+      return $scope.editing.indexOf(field) >= 0;
+    }
+
+    $scope.toggleEditing = function(field){
+      var index = $scope.editing.indexOf(field);
+      if(index >= 0){
+        $scope.editing.splice(index, 1);
+      } else {
+        $scope.editing.push(field);
+      }
+    }
+
+    $scope.updateJob = function(){
+      $http.put('/api/jobs/' + $scope.job._id, $scope.job)
         .success(function(data){
-          $scope.formData = {};
-          $scope.jobs.push(data);
-          console.log(data);
+          isUpdateFromServer = true;
+          $scope.job = data;
         })
         .error(function(data){
-          console.log("error: " + data)
-        })
-    };
-
-    $scope.deleteJob = function(id){
-      $http.delete('/api/jobs/' + id)
-        .success(function(data){
-          $scope.jobs = $filter('filter')($scope.jobs, {_id: '!' + id});
           console.log(data);
-        })
-        .error(function(data){
-          console.log("error: " + data);
         })
     }
+
+    $scope.setUpdate = function(newVal, oldVal){
+      if (newVal != oldVal) {
+        if (timeout) {
+          $timeout.cancel(timeout);
+        }
+        if(isUpdateFromServer){
+          isUpdateFromServer = false;
+        } else {
+          timeout = $timeout($scope.updateJob, secondsToWaitBeforeSave * 1000);
+        }
+      }
+    }
+
+    $scope.setState = function(newState){
+      $scope.job.state = newState;
+    }
+
+    $scope.$watch('job.name', $scope.setUpdate);
+    $scope.$watch('job.link', $scope.setUpdate);
+    $scope.$watch('job.notes', $scope.setUpdate);
+    $scope.$watch('job.state', $scope.setUpdate);
+
+
 });
