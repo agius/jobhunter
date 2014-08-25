@@ -4,6 +4,8 @@ var app            = express();
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var moment         = require('moment');
+var parseFormat    = require('moment-parseformat');
 
 // configuration ===========================================
   
@@ -24,10 +26,6 @@ app.use(express.static(__dirname + '/public')); // set the static files location
 // routes ==================================================
 require('./app/routes/jobRoutes')(app);
 require('./app/routes/frontend')(app);
-
-// models ==================================================
-app.models = {};
-app.models.Job = require('./app/models/job.js')(app); // configure Job model
 
 // start app ===============================================
 app.listen(port);                   // startup our app at http://localhost:8080

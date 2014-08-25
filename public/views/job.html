@@ -1,8 +1,6 @@
 <div class="all-jobs" ng-controller="JobsController">
   <div id="job-list" class="row">
     <div class="col-md-12">
-    <h3>Jobs</h3>
-    <!-- LOOP OVER THE TODOS IN $scope.todos -->
       <div class="jobs">
         <div class="job" ng-repeat="job in jobs">
           <div class="job-form" ng-include="'views/partials/jobForm.html'"></div>
@@ -15,7 +13,7 @@
   <!-- FORM TO CREATE JOBS -->
   <div id="new-job-form" class="row">
     <div class="col-md-6">
-      <h3>New Job</h3>
+      <h3>New Job Application</h3>
       <form>
         <div class="form-group">
 

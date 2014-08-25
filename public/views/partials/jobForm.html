@@ -38,6 +38,14 @@
           <span ng-if="!job.link">Link to Job Post</span>
         </a>
       </div>
+
+      <div class="form-group">
+        <a href="mailto:{{ job.contact }}" target="_blank" ng-if="job.contact && !isEditing('contact')">{{ job.contact }}</a>
+        <a href="#" editable-email="job.contact" onshow="toggleEditing('contact')" onhide="toggleEditing('contact')">
+          <span class="glyphicon glyphicon-pencil" ng-if="job.contact"></span>
+          <span ng-if="!job.contact">Contact Email</span>
+        </a>
+      </div>
       
       <div class="form-group">
         <p>

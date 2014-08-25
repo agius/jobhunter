@@ -1,15 +1,13 @@
+// in a larger app, I would separate these out into real controllers
+// in a toy app... I will be lazy
+
 module.exports = function(app) {
 
   var Job = require('../models/job.js');
 
-  // server routes ===========================================================
-  // handle things like api calls
-  // authentication routes
-
-  // sample api route
   app.get('/api/jobs', function(req, res) {
     // use mongoose to get all jobs in the database
-    Job.find(function(err, jobs) {
+    Job.find().sort('+createdAt').exec(function(err, jobs) {
       // if there is an error retrieving, send the error. nothing after res.send(err) will execute
       if (err) res.send(err);
       res.json(jobs); // return all nerds in JSON format
@@ -41,11 +39,13 @@ module.exports = function(app) {
   app.put('/api/jobs/:job_id', function(req, res){
     Job.findById(req.param('job_id'), function(err, job){
       if(err) res.send(err);
-      console.log(req.body);
+
       job.name = req.body.name;
       job.state = req.body.state;
+      job.contact = req.body.contact;
       job.link = req.body.link;
       job.notes = req.body.notes;
+      job.interviewLocation = req.body.interviewLocation;
       job.updatedAt = new Date().getTime();
       job.save(function(err){
         if(err) req.send(err);

@@ -3,10 +3,12 @@ var Schema       = mongoose.Schema;
 
 var JobSchema   = new Schema({
   name: String,
-  link: String,
   state: String,
+  link: String,
+  contact: String,
   notes: String,
-  interviewDate: Number,
+  interviewAt: Number,
+  interviewLocation: String,
   updatedAt: Number,
   createdAt: Number
 });
