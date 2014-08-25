@@ -1,0 +1,31 @@
+<div id="job-list" class="row">
+  <div class="col-md-12">
+  <h3>Jobs</h3>
+  <!-- LOOP OVER THE TODOS IN $scope.todos -->
+  <div class="checkbox" ng-repeat="job in jobs track by $index">
+    <label>
+      <input type="checkbox" ng-click="deleteJob(job._id)">
+      {{ job.name }}
+    </label>
+  </div>
+
+  </div>
+</div>
+
+<!-- FORM TO CREATE JOBS -->
+<div id="job-form" class="row">
+  <div class="col-md-6">
+    <h3>New Job</h3>
+    <form>
+      <div class="form-group">
+
+        <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+        <input type="text" class="form-control input-lg" 
+               placeholder="Company Name" ng-model="formData.name">
+      </div>
+
+      <!-- createToDo() WILL CREATE NEW TODOS -->
+      <button type="submit" class="btn btn-primary btn-lg" ng-click="createJob()">Add</button>
+    </form>
+  </div>
+</div>
