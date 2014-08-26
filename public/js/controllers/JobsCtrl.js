@@ -10,6 +10,14 @@ angular.module('JobsCtrl', [])
         console.log("error: " + data);
       });
 
+    $scope.activeJobs = function(){
+      return $filter('filter')($scope.jobs, {state: '!cancelled'});
+    }
+
+    $scope.cancelledJobs = function(){
+      return $filter('filter')($scope.jobs, {state: 'cancelled'});
+    }
+
     $scope.createJob = function(){
       console.log('submitting new job');
       console.log($scope.formData);

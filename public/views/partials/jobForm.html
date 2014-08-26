@@ -22,13 +22,16 @@
         <div class="job-responded" ng-switch-when="accepted">
           <div class="job-emailed-partial" ng-include="'views/partials/jobAccepted.html'"></div>
         </div>
+        <div class="job-responded" ng-switch-when="cancelled">
+          <div class="job-emailed-partial" ng-include="'views/partials/jobCancelled.html'"></div>
+        </div>
       </div>
     </div> <!-- end .col-md -->
 
     <div class="col-md-6">
       <div class='pull-right'>
-        <button type="button" class="btn btn-xs btn-danger" ng-click="deleteJob(job._id)">
-          Delete
+        <button type="button" class="btn btn-xs btn-danger" ng-click="setState('cancelled')">
+          Cancel
         </button>
       </div>
       <div class="form-group">
@@ -37,6 +40,10 @@
           <span class="glyphicon glyphicon-pencil" ng-if="job.link"></span>
           <span ng-if="!job.link">Link to Job Post</span>
         </a>
+      </div>
+
+      <div class="form-group">
+        <a href='#' editable-number="job.salary">{{ (job.salary | currency) || 'salary info'}}</a>
       </div>
 
       <div class="form-group">

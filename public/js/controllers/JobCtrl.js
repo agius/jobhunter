@@ -1,5 +1,5 @@
 angular.module('JobCtrl', [])
-  .controller('JobController', function($scope, $http, $timeout) {
+  .controller('JobController', function($scope, $http, $timeout, $filter) {
 
     var timeout = null;
     var secondsToWaitBeforeSave = 2;
@@ -52,6 +52,8 @@ angular.module('JobCtrl', [])
     $scope.$watch('job.link', $scope.setUpdate);
     $scope.$watch('job.notes', $scope.setUpdate);
     $scope.$watch('job.state', $scope.setUpdate);
+    $scope.$watch('job.interviewAtString', $scope.setUpdate);
+    $scope.$watch('job.interviewLocation', $scope.setUpdate);
 
 
 });

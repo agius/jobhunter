@@ -14,6 +14,15 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/api/jobs/:state', function(req, res) {
+    // use mongoose to get all jobs in the database
+    Job.find().where('state').equals(req.param('state')).sort('+createdAt').exec(function(err, jobs) {
+      // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+      if (err) res.send(err);
+      res.json(jobs); // return all nerds in JSON format
+    });
+  });
+
   app.get('/api/job/:job_id', function(req, res) {
     Job.findById(req.param('job_id'), function(err, job) {
       if (err) res.send(err);
@@ -45,6 +54,8 @@ module.exports = function(app) {
       job.contact = req.body.contact;
       job.link = req.body.link;
       job.notes = req.body.notes;
+      job.salary = req.body.salary;
+      job.interviewAtString = req.body.interviewAtString;
       job.interviewLocation = req.body.interviewLocation;
       job.updatedAt = new Date().getTime();
       job.save(function(err){
