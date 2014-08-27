@@ -8,14 +8,12 @@ var methodOverride = require('method-override');
 var passport       = require('passport');
 var session        = require('express-session');
 var morgan         = require('morgan');
+var settings       = require('./config/settings');
 
 // configuration ===========================================
   
 // config files
-var db = require('./config/db');
-
-var port = process.env.PORT || 8080; // set our port
-mongoose.connect(db.url); // connect to our mongoDB database
+mongoose.connect(settings.mongo); // connect to our mongoDB database
 
 // get all data/stuff of the body (POST) parameters
 app.use(bodyParser.json()); // parse application/json 
@@ -29,9 +27,9 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static(__dirname + '/public'));
 
 // cookies & sessions
-app.use(cookieParser('wpCNJ8oUfdQmVySvzsW'));
+app.use(cookieParser(settings.sessionSecret));
 app.use(session({
-  secret: 'wpCNJ8oUfdQmVySvzsW',
+  secret: settings.sessionSecret,
   saveUninitialized: true,
   resave: true,
   cookie : {
@@ -39,7 +37,7 @@ app.use(session({
   }
 }));
 
-app.use(morgan('dev'));
+app.use(morgan(settings.logFormat));
 
 // models ==================================================
 require('./app/models/job');
@@ -56,6 +54,6 @@ require('./app/routes/jobRoutes')(app);
 require('./app/routes/frontend')(app);
 
 // start app ===============================================
-app.listen(port);                   // startup our app at http://localhost:8080
-console.log('Magic happens on port ' + port);       // shoutout to the user
+app.listen(settings.port);                   // startup our app at http://localhost:8080
+console.log('Magic happens on port ' + settings.port);       // shoutout to the user
 exports = module.exports = app;             // expose app
