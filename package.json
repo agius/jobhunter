@@ -19,6 +19,6 @@
     "bower": "~1.3.9"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install --quiet --config.directory=public/libs"
+    "postinstall": "./node_modules/bower/bin/bower install --quiet"
   }
 }
