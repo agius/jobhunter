@@ -9,6 +9,7 @@
     "angular-route": "latest",
     "angular-xeditable": "latest",
     "moment": "~2.8",
-    "moment-parseformat": "~0.0.10"
+    "moment-parseformat": "~0.0.10",
+    "underscore": "~1.7.0"
   }
 }

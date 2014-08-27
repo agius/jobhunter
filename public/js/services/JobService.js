@@ -2,7 +2,10 @@ angular.module('JobService', []).factory('Job', ['$http', function($http) {
 
   return {
     // call to get all nerds
-    get : function() {
+    index : function(state, success) {
+      if(!_.empty(state)){
+        return $http.get('/api/jobs/' + state);
+      }
       return $http.get('/api/jobs');
     },
 

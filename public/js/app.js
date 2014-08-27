@@ -6,8 +6,12 @@ angular.module('job-hunter', [
   'JobsCtrl',
   'JobCtrl',
   'JobService'
-]).config(function($logProvider){
+])
+.constant('_', window._)
+.config(function($logProvider){
   $logProvider.debugEnabled(true);
-}).run(function(editableOptions){
+})
+.run(function($rootScope, editableOptions){
+  $rootScope._ = window._;
   editableOptions.theme = 'bs3';
 });

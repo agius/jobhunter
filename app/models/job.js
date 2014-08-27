@@ -5,6 +5,7 @@ var _            = require('underscore');
 var Schema       = mongoose.Schema;
 
 var JobSchema   = new Schema({
+  _userId: Schema.Types.ObjectId,
   name: String,
   state: String,
   link: String,
@@ -37,10 +38,24 @@ JobSchema.virtual('interviewAtString')
     this.markModified('interviewAt');
   });
 
+JobSchema.virtual('userId')
+  .get(function(){
+    this._userId;
+  })
+  .set(function(idOrString){
+    if(_.isString(idOrString)) idOrString = mongoose.Types.ObjectId(idOrString);
+    this._userId = idOrString;
+  });
+
 JobSchema.set('toJSON', {
   virtuals: true
 });
 
-var Job = mongoose.model('Job', JobSchema);
+JobSchema.methods = {
+  isPermitted: function(userId){
+    if(_.isString(userId)) userId = mongoose.Types.ObjectId(userId);
+    return this._userId.equals(userId);
+  }
+}
 
-module.exports = Job;
+mongoose.model('Job', JobSchema);

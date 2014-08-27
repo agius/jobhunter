@@ -1,5 +1,12 @@
-<div class="jumbotron text-center">
-  <h1>Home</h1>
+<div ng-if="_.empty(user)">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center">Keep track of your job hunt</h1>
+    </div>
+  </div>
+  <div class="login-form" ng-include="'views/partials/login.html'"></div>
+</div>
 
-  <p>{{ tagline }}</p>
+<div ng-if="!_.empty(user)">
+  <div class="job-hunting" ng-include="'views/job.html'"></div>
 </div>
