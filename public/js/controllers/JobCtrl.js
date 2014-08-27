@@ -1,7 +1,6 @@
 angular.module('JobCtrl', [])
-  .controller('JobController', function($scope, $http, $timeout, $filter) {
+  .controller('JobController', function($scope, JobService, $timeout) {
 
-    console.log('initializing job controller id: ' + $scope.job._id);
     var timeout = null;
     var secondsToWaitBeforeSave = 2;
 
@@ -21,13 +20,7 @@ angular.module('JobCtrl', [])
     }
 
     $scope.updateJob = function(){
-      $http.put('/api/jobs/' + $scope.job._id, $scope.job)
-        .success(function(data){
-          console.log('job updated')
-        })
-        .error(function(data){
-          console.log(data);
-        })
+      JobService.update($scope.job);
     }
 
     $scope.setUpdate = function(newVal, oldVal){
@@ -38,7 +31,13 @@ angular.module('JobCtrl', [])
     }
 
     $scope.setState = function(newState){
+      var oldState = $scope.job.state;
       $scope.job.state = newState;
+      // on cancel / uncancel, will kill this controller and swap to new scope
+      // so don't wait
+      if(oldState == 'cancelled' || newState == 'cancelled'){
+        JobService.update($scope.job);
+      }
     }
 
     $scope.$watchCollection('job', $scope.setUpdate);

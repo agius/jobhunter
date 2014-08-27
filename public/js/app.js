@@ -2,10 +2,10 @@ angular.module('job-hunter', [
   'ngRoute',
   'appRoutes',
   'xeditable',
+  'JobService',
   'MainCtrl',
   'JobsCtrl',
-  'JobCtrl',
-  'JobService'
+  'JobCtrl'
 ])
 .constant('_', window._)
 .config(function($logProvider){

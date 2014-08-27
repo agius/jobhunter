@@ -58,7 +58,7 @@ module.exports = function(app) {
     res.json(job);
   });
 
-  app.put('/api/jobs/:job_id', isAuthed, function(req, res){
+  app.put('/api/job/:job_id', isAuthed, function(req, res){
     Job.findById(req.param('job_id'), function(err, job){
       if(err) return res.send(err);
       if(!job.isPermitted(req.user._id)) return res.status(401).send('Unauthorized');
@@ -78,7 +78,7 @@ module.exports = function(app) {
     });
   });
 
-  app.delete('/api/jobs/:job_id', isAuthed, function(req, res){
+  app.delete('/api/job/:job_id', isAuthed, function(req, res){
     Job.findById(req.param('job_id'), function(err, job){
       if(err) return res.send(err);
       if(!job.isPermitted(req.user._id)){

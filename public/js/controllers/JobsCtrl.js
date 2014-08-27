@@ -1,10 +1,9 @@
 angular.module('JobsCtrl', [])
-  .controller('JobsController', function($scope, $http, $filter) {
+  .controller('JobsController', function($scope, JobService, $filter) {
     $scope.formData = {};
-    $http.get('/api/jobs')
+    JobService.index()
       .success(function(data){
         $scope.jobs = data;
-        console.log(data);
       })
       .error(function(data){
         console.log("error: " + data);
@@ -19,13 +18,10 @@ angular.module('JobsCtrl', [])
     }
 
     $scope.createJob = function(){
-      console.log('submitting new job');
-      console.log($scope.formData);
-      $http.post('/api/jobs', $scope.formData)
+      JobService.create($scope.formData)
         .success(function(data){
           $scope.formData = {};
           $scope.jobs.push(data);
-          console.log(data);
         })
         .error(function(data){
           console.log("error: " + data)
@@ -33,10 +29,9 @@ angular.module('JobsCtrl', [])
     };
 
     $scope.deleteJob = function(id){
-      $http.delete('/api/jobs/' + id)
+      JobService.delete(id)
         .success(function(data){
           $scope.jobs = $filter('filter')($scope.jobs, {_id: '!' + id});
-          console.log(data);
         })
         .error(function(data){
           console.log("error: " + data);

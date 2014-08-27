@@ -30,10 +30,16 @@
       <h3>Didn't Work Out</h3>
       <div class="cancelled-job" ng-repeat="job in cancelledJobs()">
         <div ng-controller="JobController">
-          <button type="button" class="btn btn-danger btn-sm pull-right"
-                  ng-click="setState('emailed')">
-            Restore
-          </button>
+          <div class="pull-right">
+            <button type="button" class="btn btn-success btn-sm"
+                    ng-click="setState('emailed')">
+              Restore
+            </button>
+            <button type="button" class="btn btn-danger btn-sm"
+                    ng-click="deleteJob(job._id)">
+              Delete
+            </button>
+          </div>
           <h3>{{ job.name }}</h3>
         </div>
       </div>
