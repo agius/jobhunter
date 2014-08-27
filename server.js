@@ -11,6 +11,8 @@ var morgan         = require('morgan');
 var settings       = require('./config/settings');
 
 // configuration ===========================================
+
+console.log(settings);
   
 // config files
 mongoose.connect(settings.mongo); // connect to our mongoDB database
@@ -28,13 +30,16 @@ app.use(express.static(__dirname + '/public'));
 
 // cookies & sessions
 app.use(cookieParser(settings.sessionSecret));
+
+var store = require('mongoose-session')(mongoose);
 app.use(session({
   secret: settings.sessionSecret,
   saveUninitialized: true,
   resave: true,
   cookie : {
     expires: false
-  }
+  },
+  store: store
 }));
 
 app.use(morgan(settings.logFormat));
