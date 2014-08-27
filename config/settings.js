@@ -7,7 +7,7 @@ var settings = {
   },
   production : {
     mongo : process.env.MONGOHQ_URL,
-    port  : 80,
+    port  : process.env.PORT,
     sessionSecret : process.env.SESSION_TOKEN,
     logFormat : 'tiny'
   }
