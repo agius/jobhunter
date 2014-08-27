@@ -28,6 +28,7 @@ build/Release
 node_modules
 
 public/libs/*/
+.bower-*
 
 # Users Environment Variables
 .lock-wscript
