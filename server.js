@@ -12,6 +12,7 @@ var settings       = require('./config/settings');
 
 // configuration ===========================================
 
+console.log(process.env.NODE_ENV);
 console.log(settings);
   
 // config files
@@ -59,6 +60,6 @@ require('./app/routes/jobRoutes')(app);
 require('./app/routes/frontend')(app);
 
 // start app ===============================================
-app.listen(settings.port);                   // startup our app at http://localhost:8080
+app.listen(process.env.PORT || 8080);                   // startup our app at http://localhost:8080
 console.log('Magic happens on port ' + settings.port);       // shoutout to the user
 exports = module.exports = app;             // expose app

@@ -6,7 +6,7 @@ var settings = {
     logFormat : 'dev'
   },
   production : {
-    mongo : process.env.MONGOHQ_URL,
+    mongo : process.env.MONGO_URL,
     port  : process.env.PORT,
     sessionSecret : process.env.SESSION_TOKEN,
     logFormat : 'tiny'
