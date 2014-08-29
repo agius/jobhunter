@@ -1,4 +1,8 @@
-## Job Hunter - [Live Site](http://jobhuntr.co)
+## Job Hunter 
+
+# [Live Site](http://jobhuntr.co)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/agius/jobhunter/tree/heroku)
 
 This is a quick app to keep track of your job hunt. Add jobs to your list, mark your progress as you get in touch, get responses, interviews and offers, then have a quick summary of your search at any time. Also mark down important details like interview dates, salary, and contact info.
 
