@@ -12,7 +12,6 @@ var settings       = require('./config/settings');
 
 // configuration ===========================================
 
-console.log(process.env.NODE_ENV);
 console.log(settings);
   
 // config files

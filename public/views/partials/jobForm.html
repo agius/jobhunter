@@ -1,72 +1,193 @@
 <div ng-controller="JobController">
-  <div class="row">
-    <div class="col-md-12">
-      <h2><a href='#' editable-text="job.name">{{ job.name || 'Mystery Job' }}</a></h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="job-state" ng-switch="job.state">
-        <div class="job-emailed" ng-switch-default>
-          <div class="job-emailed-partial" ng-include="'views/partials/jobEmailed.html'"></div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-2">
+          <h4>
+            <a href='#' editable-text="job.name">
+              {{ job.name || 'Mystery Job' }}
+            </a>
+            <small>
+              <br>
+              <br>
+              <a href='#' ng-click="toggleDetails()">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                Details
+              </a>
+            </small>
+          </h4>
         </div>
-        <div class="job-responded" ng-switch-when="responded">
-          <div class="job-emailed-partial" ng-include="'views/partials/jobResponded.html'"></div>
-        </div>
-        <div class="job-responded" ng-switch-when="interview">
-          <div class="job-emailed-partial" ng-include="'views/partials/jobInterview.html'"></div>
-        </div>
-        <div class="job-responded" ng-switch-when="offered">
-          <div class="job-emailed-partial" ng-include="'views/partials/jobOffered.html'"></div>
-        </div>
-        <div class="job-responded" ng-switch-when="accepted">
-          <div class="job-emailed-partial" ng-include="'views/partials/jobAccepted.html'"></div>
-        </div>
-        <div class="job-responded" ng-switch-when="cancelled">
-          <div class="job-emailed-partial" ng-include="'views/partials/jobCancelled.html'"></div>
-        </div>
-      </div>
-    </div> <!-- end .col-md -->
 
-    <div class="col-md-6">
-      <div class='pull-right'>
-        <button type="button" class="btn btn-xs btn-danger" ng-click="setState('cancelled')">
-          Cancel
-        </button>
-      </div>
-      <div class="form-group">
-        <a href="{{ job.link }}" target="_blank" ng-if="job.link && !isEditing('link')">{{ job.link }}</a>
-        <a href="#" editable-url="job.link" onshow="toggleEditing('link')" onhide="toggleEditing('link')">
-          <span class="glyphicon glyphicon-pencil" ng-if="job.link"></span>
-          <span ng-if="!job.link">Link to Job Post</span>
-        </a>
-      </div>
+        <div class="col-md-6">
+          <div class="progress" style="margin-top: 10px;">
+            <div class="progress-bar progress-bar-{{ stateInfo(job.state).progressClass }}" role="progressbar" 
+                 aria-valuenow="{{ stateInfo(job.state).percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 style="width: {{ stateInfo(job.state).percent }}%">
+              <span>{{ stateInfo(job.state).progressLabel }}</span>
+            </div>
+          </div>
+          
+          <div ng-if="job.state == 'interview'">
+            <div class="row">
+              <div class="col-md-6">
+                <a href="#" editable-text="job.interviewAtString">
+                  {{ job.interviewAtString || 'Add Interview Date' }}
+                </a>
+              </div>
+              <div class="col-md-6">
+                <a href="#" editable-text="job.interviewLocation">
+                  {{ job.interviewLocation || 'Add Interview Location' }}
+                </a>
+              </div>
+            </div> <!-- end row -->
+          </div> <!-- end if interview -->
 
-      <div class="form-group">
-        <a href='#' editable-number="job.salary">{{ (job.salary | currency) || 'salary info'}}</a>
-      </div>
+          <div ng-if="job.state == 'offered'">
+            <a href="#" editable-number="job.salary">
+              {{ job.salary ? (job.salary | currency) : 'Add Salary' }}
+            </a>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <a href="mailto:{{ job.contact }}" target="_blank" ng-if="job.contact && !isEditing('contact')">{{ job.contact }}</a>
-        <a href="#" editable-email="job.contact" onshow="toggleEditing('contact')" onhide="toggleEditing('contact')">
-          <span class="glyphicon glyphicon-pencil" ng-if="job.contact"></span>
-          <span ng-if="!job.contact">Contact Email</span>
-        </a>
+        <div class="col-md-2">
+          <button type="button" 
+                  class="btn btn-success btn-sm btn-block" 
+                  ng-click="setState(stateInfo(job.state).next)" 
+                  style="margin-top: 5px;">
+            {{ stateInfo(job.state).nextLabel }}
+          </button>
+        </div>
+        <div class="col-md-2">
+          <button type="button" 
+                  class="btn btn-danger btn-sm btn-block" 
+                  ng-click="setState('cancelled')"
+                  style="margin-top: 5px;">
+            Cancel
+          </button>
+        </div> <!-- end cols -->
+      </div> <!-- end row -->
+    </div> <!-- end panel-header -->
+  <div class="panel-footer" ng-if="details">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group title-field">
+          
+          <div ng-if="job.title">
+            <label>Title:</label>
+            &nbsp; &nbsp;
+            <span ng-if="!isEditing('title')">{{ job.title }}</span>
+            &nbsp; &nbsp;
+            <a href="#" editable-text="job.title" onshow="toggleEditing('title')" onhide="toggleEditing('title')">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+          </div>
+          
+          <div ng-if="!job.title">
+            <a href="#" editable-text="job.title" onshow="toggleEditing('title')" onhide="toggleEditing('title')">
+              <span>Add Title</span>
+            </a>
+          </div>
+          
+        </div>
+
+        <div class="form-group location-field">
+          
+          <div ng-if="job.location">
+            <label>Location:</label>
+            &nbsp; &nbsp;
+            <span ng-if="!isEditing('location')">{{ job.location }}</span>
+            &nbsp; &nbsp;
+            <a href="#" editable-text="job.location" onshow="toggleEditing('location')" onhide="toggleEditing('location')">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+          </div>
+          
+          <div ng-if="!job.location">
+            <a href="#" editable-text="job.location" onshow="toggleEditing('location')" onhide="toggleEditing('location')">
+              <span>Add Location</span>
+            </a>
+          </div>
+          
+        </div>
+
+        <div class="form-group link-field">
+          
+          <div ng-if="job.link">
+            <label>Link:</label>
+            &nbsp; &nbsp;
+            <a href="{{ job.link }}" target="_blank" ng-if="!isEditing('link')">{{ job.link }}</a>
+            &nbsp; &nbsp;
+            <a href="#" editable-url="job.link" onshow="toggleEditing('link')" onhide="toggleEditing('link')">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+          </div>
+          
+          <div ng-if="!job.link">
+            <a href="#" editable-url="job.link" onshow="toggleEditing('link')" onhide="toggleEditing('link')">
+              <span>Add Link to Job Listing</span>
+            </a>
+          </div>
+          
+        </div>
+
+        <div class="form-group contact-field">
+          
+          <div ng-if="job.contact">
+            <label>Contact Email:</label>
+            &nbsp; &nbsp;
+            <a href="mailto:{{ job.contact }}" target="_blank" ng-if="!isEditing('contact')">{{ job.contact }}</a>
+            &nbsp; &nbsp;
+            <a href="#" editable-email="job.contact" onshow="toggleEditing('contact')" onhide="toggleEditing('contact')">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+          </div>
+          
+          <div ng-if="!job.contact">
+            <a href="#" editable-email="job.contact" onshow="toggleEditing('contact')" onhide="toggleEditing('contact')">
+              <span>Add Contact Email</span>
+            </a>
+          </div>
+          
+        </div>
+
+        <div class="form-group salary-field">
+          
+          <div ng-if="job.salary">
+            <label>Salary:</label>
+            &nbsp; &nbsp;
+            <span ng-if="!isEditing('salary')">{{ job.salary | currency }}</span>
+            &nbsp; &nbsp;
+            <a href="#" editable-number="job.salary" onshow="toggleEditing('salary')" onhide="toggleEditing('salary')">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+          </div>
+          
+          <div ng-if="!job.salary">
+            <a href="#" editable-number="job.salary" onshow="toggleEditing('salary')" onhide="toggleEditing('salary')">
+              <span>Add Salary Info</span>
+            </a>
+          </div>
+          
+        </div>
+
       </div>
       
-      <div class="form-group">
-        <p>
-          <span ng-if="!isEditing('notes')">
-            {{ job.notes }}
-          </span>
-          <a href='#' editable-textarea="job.notes" e-rows="4" e-cols="40" 
-                      onshow="toggleEditing('notes')" onhide="toggleEditing('notes')">
-            <span class="glyphicon glyphicon-pencil" ng-if="job.notes"></span>
-            <span ng-if="!job.notes">Add Notes</span>
-          </a>
-        </p>
-      </div>
-    </div> <!-- end .col -->
-
-  </div> <!-- end .row -->
+      <div class="col-md-6">
+        <div class="form-group">
+          <p>
+            <span ng-if="!isEditing('notes')">
+              {{ job.notes }}
+            </span>
+            <a href='#' editable-textarea="job.notes" e-rows="4" e-cols="40" 
+                        onshow="toggleEditing('notes')" onhide="toggleEditing('notes')">
+              <span class="glyphicon glyphicon-pencil" ng-if="job.notes"></span>
+              <span ng-if="!job.notes">Add Notes</span>
+            </a>
+          </p>
+        </div>
+      </div> <!-- end .col -->
+    </div> <!-- end .row -->
+  </div> <!-- end panel-body -->
 </div>

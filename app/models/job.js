@@ -8,6 +8,8 @@ var JobSchema   = new Schema({
   _userId: Schema.Types.ObjectId,
   name: String,
   state: String,
+  title: String,
+  location: String,
   link: String,
   contact: String,
   salary: Number,

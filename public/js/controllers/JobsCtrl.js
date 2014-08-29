@@ -1,20 +1,24 @@
 angular.module('JobsCtrl', [])
   .controller('JobsController', function($scope, JobService, $filter) {
+    var _activeJobs, _cancelledJobs;
     $scope.formData = {};
+    
     JobService.index()
       .success(function(data){
         $scope.jobs = data;
+        _activeJobs = $filter('filter')($scope.jobs, {state: '!cancelled'});
+        _cancelledJobs = $filter('filter')($scope.jobs, {state: 'cancelled'});
       })
       .error(function(data){
         console.log("error: " + data);
       });
 
     $scope.activeJobs = function(){
-      return $filter('filter')($scope.jobs, {state: '!cancelled'});
+      return _activeJobs;
     }
 
     $scope.cancelledJobs = function(){
-      return $filter('filter')($scope.jobs, {state: 'cancelled'});
+      return _cancelledJobs;
     }
 
     $scope.createJob = function(){
@@ -22,6 +26,7 @@ angular.module('JobsCtrl', [])
         .success(function(data){
           $scope.formData = {};
           $scope.jobs.push(data);
+          _activeJobs = $filter('filter')($scope.jobs, {state: '!cancelled'});
         })
         .error(function(data){
           console.log("error: " + data)
@@ -32,6 +37,7 @@ angular.module('JobsCtrl', [])
       JobService.delete(id)
         .success(function(data){
           $scope.jobs = $filter('filter')($scope.jobs, {_id: '!' + id});
+          _cancelledJobs = $filter('filter')($scope.jobs, {state: 'cancelled'});
         })
         .error(function(data){
           console.log("error: " + data);

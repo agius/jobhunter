@@ -1,17 +1,13 @@
 <div class="all-jobs" ng-controller="JobsController">
-  <div id="job-list" class="row">
+  <div class="row">
     <div class="col-md-12">
-      <div class="jobs">
-        <div class="job" ng-repeat="job in activeJobs()">
-          <div class="job-form" ng-include="'views/partials/jobForm.html'"></div>
-          <hr>
-        </div> <!-- end for job -->
-      </div> <!-- end jobs -->
+      <div ng-repeat="job in activeJobs() | orderBy: 'createdAt'">
+        <div ng-include="'views/partials/jobForm.html'"></div>
+      </div> <!-- end for job -->
     </div>
   </div>
 
-  <!-- FORM TO CREATE JOBS -->
-  <div id="new-job-form" class="row">
+  <div class="row">
     <div class="col-md-6">
       <h3>New Job Application</h3>
       <form>
@@ -26,23 +22,13 @@
         <button type="submit" class="btn btn-primary btn-lg" ng-click="createJob()">Add</button>
       </form>
     </div>
+    
     <div class="col-md-6">
-      <h3>Didn't Work Out</h3>
-      <div class="cancelled-job" ng-repeat="job in cancelledJobs()">
-        <div ng-controller="JobController">
-          <div class="pull-right">
-            <button type="button" class="btn btn-success btn-sm"
-                    ng-click="setState('emailed')">
-              Restore
-            </button>
-            <button type="button" class="btn btn-danger btn-sm"
-                    ng-click="deleteJob(job._id)">
-              Delete
-            </button>
-          </div>
-          <h3>{{ job.name }}</h3>
-        </div>
+      <h3 ng-if="cancelledJobs()">Didn't Work Out</h3>
+      <div class="cancelled-job" ng-repeat="job in cancelledJobs() | orderBy: 'createdAt'">
+        <div ng-include="'views/partials/jobCancelled.html'"></div>
       </div>
     </div>
+  
   </div>
 </div>

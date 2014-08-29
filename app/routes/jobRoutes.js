@@ -1,8 +1,9 @@
 // in a larger app, I would separate these out into real controllers
 // in a toy app... I will be lazy
 
-var mongoose     = require('mongoose')
-  , Job          = mongoose.model('Job');
+var mongoose     = require('mongoose'),
+    _            = require('underscore'),
+    Job          = mongoose.model('Job');
 
 module.exports = function(app) {
 
@@ -62,14 +63,17 @@ module.exports = function(app) {
     Job.findById(req.param('job_id'), function(err, job){
       if(err) return res.send(err);
       if(!job.isPermitted(req.user._id)) return res.status(401).send('Unauthorized');
-      job.name = req.body.name;
-      job.state = req.body.state;
-      job.contact = req.body.contact;
-      job.link = req.body.link;
-      job.notes = req.body.notes;
-      job.salary = req.body.salary;
-      job.interviewAtString = req.body.interviewAtString;
-      job.interviewLocation = req.body.interviewLocation;
+
+      var fields = [
+        'name', 'state', 'title', 'location', 'link',
+        'contact', 'salary', 'notes', 'interviewAt',
+        'interviewLocation'
+      ]
+
+      _.each(fields, function(field){
+        job[field] = req.body[field];
+      })
+
       job.updatedAt = new Date().getTime();
       job.save(function(err){
         if(err) req.send(err);
