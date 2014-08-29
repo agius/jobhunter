@@ -1,0 +1,9 @@
+html body footer {
+  bottom: 0;
+  height: 100px;
+  margin-top: 50px;
+}
+
+html body footer.well {
+  margin-bottom: 0;
+}

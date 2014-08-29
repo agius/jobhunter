@@ -5,6 +5,15 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
     .when('/', {
       templateUrl: 'views/home.html'
     })
+    .when('/login', {
+      templateUrl: 'views/login.html'
+    })
+    .when('/signup', {
+      templateUrl: 'views/signup.html'
+    })
+    .when('/jobs', {
+      templateUrl: 'views/job.html'
+    })
 
   $locationProvider.html5Mode(true);
 

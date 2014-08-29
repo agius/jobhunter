@@ -1,5 +1,13 @@
 {
   "name": "job-hunter",
+  "description": "A simple MEAN app to keep track of your job hunt.",
+  "version": "0.1.0",
+  "private": false,
+  "author": "Andrew Evans <andrew@atevans.com> (https://atevans.com)",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/agius/jobhunter.git"
+  },
   "main": "server.js",
   "dependencies": {
     "express": "~4.5.1",

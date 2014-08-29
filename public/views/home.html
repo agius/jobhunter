@@ -1,10 +1,24 @@
 <div ng-if="_.empty(user)">
-  <div class="row">
-    <div class="col-md-12">
-      <h1 class="text-center">Keep track of your job hunt</h1>
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Keep track of your job hunt</h1>
+        <p>
+          Job Hunter is the quickest, easiest way to keep track of your job hunt. Make your list, and mark your progress as you get in touch, get responses, interviews, and offers.
+        </p>
+        <a href="/signup" class="btn btn-success btn-lg">
+          Sign Up
+        </a>
+      </div>
+      <div class="col-md-6">
+        <br>
+        <br>
+        <a href="#" class="thumbnail">
+          <img src="/img/jobhuntr.png" class="img-responsive" alt="JobHuntr screenshot">
+        </a>
+      </div>
     </div>
   </div>
-  <div class="login-form" ng-include="'views/partials/login.html'"></div>
 </div>
 
 <div ng-if="!_.empty(user)">
