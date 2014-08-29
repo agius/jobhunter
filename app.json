@@ -1,0 +1,18 @@
+{
+  "name": "Job Hunter",
+  "description": "An app to keep track of your job hunt",
+  "website": "http://jobhuntr.co",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static", "angular", "job", "crm"],
+  "repository": "https://github.com/agius/jobhunter/tree/heroku",
+  "addons": ["mongohq:sandbox"],
+  "env": {
+    "NODE_ENV": "production",
+    "SESSION_TOKEN": {
+      "description": "Generates session token",
+      "generator": "secret"
+    },
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs#fixbower"
+  }
+  
+}
