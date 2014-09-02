@@ -42,20 +42,20 @@
     </div>
   </div>
 
+  <div class="row spacer-1">
+    <div class="col-md-12">
+      <div ng-repeat="job in activeJobs() | orderBy:order:true ">
+        <div ng-include="'views/partials/jobForm.html'"></div>
+      </div> <!-- end for job -->
+    </div>
+  </div>
+
   <div class="row spacer-1">    
     <div class="col-md-6">
       <h3 ng-if="cancelledJobs()">Didn't Work Out</h3>
       <div class="cancelled-job" ng-repeat="job in cancelledJobs() | orderBy: 'createdAt'">
         <div ng-include="'views/partials/jobCancelled.html'"></div>
       </div>
-    </div>
-  </div>
-
-  <div class="row spacer-1">
-    <div class="col-md-12">
-      <div ng-repeat="job in activeJobs() | orderBy:order:true ">
-        <div ng-include="'views/partials/jobForm.html'"></div>
-      </div> <!-- end for job -->
     </div>
   </div>
 
