@@ -2,7 +2,6 @@ angular.module('JobCtrl', [])
   .controller('JobController', function($scope, JobService, $timeout) {
     
     $scope.editing = [];
-    $scope.details = false;
 
     var timeout = null;
     var secondsToWaitBeforeSave = 2;
@@ -13,10 +12,6 @@ angular.module('JobCtrl', [])
 
     $scope.isEditing = function(field){
       return $scope.editing.indexOf(field) >= 0;
-    }
-
-    $scope.toggleDetails = function(){
-      $scope.details = !$scope.details;
     }
 
     $scope.toggleEditing = function(field){

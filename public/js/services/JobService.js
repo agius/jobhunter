@@ -24,6 +24,13 @@ angular.module('JobService', []).service('JobService', function($http) {
   }
 
   this.states = {
+    base: {
+      percent: 0,
+      progressClass: 'success',
+      progressLabel: 'Considering',
+      nextLabel: 'Contacted',
+      next: 'emailed'
+    },
     emailed: {
       percent: 20,
       progressClass: 'success',
@@ -61,13 +68,14 @@ angular.module('JobService', []).service('JobService', function($http) {
       percent: 0,
       progressClass: 'danger',
       progressLabel: "Didn't work out"
-    },
-    base: {
-      percent: 0,
-      progressClass: 'success',
-      progressLabel: 'Considering',
-      nextLabel: 'Contacted',
-      next: 'emailed'
     }
+  };
+
+  this.getStates = function(){
+    return angular.extend({}, this.states);
+  }
+
+  this.stateNames = function(){
+    return _.keys(this.states);
   }
 });

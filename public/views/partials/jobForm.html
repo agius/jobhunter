@@ -8,9 +8,8 @@
               {{ job.name || 'Mystery Job' }}
             </a>
             <small>
-              <br>
-              <br>
-              <a href='#' ng-click="toggleDetails()">
+              <br><br>
+              <a href='#' ng-click="toggleDetails(job._id)">
                 <span class="glyphicon glyphicon-info-sign"></span>
                 Details
               </a>
@@ -29,25 +28,28 @@
             </div>
           </div>
           
-          <div ng-if="job.state == 'interview'">
-            <div class="row">
-              <div class="col-md-6">
-                <a href="#" editable-text="job.interviewAtString">
-                  {{ job.interviewAtString || 'Add Interview Date' }}
-                </a>
-              </div>
-              <div class="col-md-6">
-                <a href="#" editable-text="job.interviewLocation">
-                  {{ job.interviewLocation || 'Add Interview Location' }}
-                </a>
-              </div>
-            </div> <!-- end row -->
-          </div> <!-- end if interview -->
+          <div class="row">
+            <div class="col-md-3">
+              <rating class="bs-rating" ng-model="job.awesomeness" max="5"></rating>
+            </div>
 
-          <div ng-if="job.state == 'offered'">
-            <a href="#" editable-number="job.salary">
-              {{ job.salary ? (job.salary | currency) : 'Add Salary' }}
-            </a>
+            <div class="col-md-5" ng-if="job.state == 'interview'">
+              <a href="#" editable-text="job.interviewAtString">
+                {{ job.interviewAtString || 'Add Interview Date' }}
+              </a>
+            </div>
+            
+            <div class="col-md-4" ng-if="job.state == 'interview'">
+              <a href="#" editable-text="job.interviewLocation">
+                {{ job.interviewLocation || 'Add Interview Location' }}
+              </a>
+            </div>
+
+            <div ng-if="job.state == 'offered'" class="col-md-4">
+              <a href="#" editable-number="job.salary">
+                {{ job.salary ? (job.salary | currency) : 'Add Salary' }}
+              </a>
+            </div>
           </div>
         </div>
 
@@ -69,9 +71,11 @@
         </div> <!-- end cols -->
       </div> <!-- end row -->
     </div> <!-- end panel-header -->
-  <div class="panel-footer" ng-if="details">
+  
+  <div class="panel-footer" ng-if="detailsOpen(job._id)">
     <div class="row">
       <div class="col-md-6">
+
         <div class="form-group title-field">
           
           <div ng-if="job.title">
@@ -175,6 +179,9 @@
       </div>
       
       <div class="col-md-6">
+        <a href="#" ng-click="toggleDetails(job._id)">
+          <span class="glyphicon glyphicon-remove pull-right" ng-click=""></span>
+        </a>
         <div class="form-group">
           <p>
             <span ng-if="!isEditing('notes')">

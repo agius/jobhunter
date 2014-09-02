@@ -2,7 +2,9 @@ angular.module('job-hunter', [
   'ngRoute',
   'appRoutes',
   'xeditable',
+  'ui.bootstrap',
   'JobService',
+  'JobHunterFilters',
   'MainCtrl',
   'JobsCtrl',
   'JobCtrl'

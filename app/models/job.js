@@ -16,6 +16,7 @@ var JobSchema   = new Schema({
   notes: String,
   interviewAt: Date,
   interviewLocation: String,
+  awesomeness: Number,
   updatedAt: Number,
   createdAt: Number
 });

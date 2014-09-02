@@ -67,7 +67,7 @@ module.exports = function(app) {
       var fields = [
         'name', 'state', 'title', 'location', 'link',
         'contact', 'salary', 'notes', 'interviewAt',
-        'interviewLocation'
+        'interviewLocation', 'awesomeness'
       ]
 
       _.each(fields, function(field){

@@ -1,34 +1,62 @@
 <div class="all-jobs" ng-controller="JobsController">
-  <div class="row">
-    <div class="col-md-12">
-      <div ng-repeat="job in activeJobs() | orderBy: 'createdAt'">
-        <div ng-include="'views/partials/jobForm.html'"></div>
-      </div> <!-- end for job -->
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-md-6">
-      <h3>New Job Application</h3>
-      <form>
-        <div class="form-group">
+      <div class="btn-group" dropdown is-open="buttons.filters">
+        <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+          Filter By State <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#" ng-click="filterState('active', 'filters')">All Active</a></li>
+          <li><a href="#" ng-click="filterState('considering', 'filters')">Considering</a></li>
+          <li ng-repeat="name in stateNames()">
+            <a href="#" ng-click="filterState(name, 'filters')">{{ states[name].progressLabel }}</a>
+          </li>
+        </ul>
+      </div>
 
-          <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-          <input type="text" class="form-control input-lg" 
-                 placeholder="Company Name" ng-model="formData.name">
+      <div class="btn-group" dropdown is-open="buttons.order">
+        <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+          Order <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#" ng-click="setOrder('createdAt', 'order')">Created</a></li>
+          <li><a href="#" ng-click="setOrder('updatedAt', 'order')">Updated</a></li>
+          <li><a href="#" ng-click="setOrder('progress', 'order')">Progress</a></li>
+          <li><a href="#" ng-click="setOrder('awesomeness', 'order')">Awesomeness</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6 text-right">
+      <form class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control input-lg" placeholder="Add New Company" ng-model="formData.name">
         </div>
 
         <!-- createToDo() WILL CREATE NEW TODOS -->
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="createJob()">Add</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="createJob()">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
       </form>
     </div>
-    
+  </div>
+
+  <div class="row spacer-1">    
     <div class="col-md-6">
       <h3 ng-if="cancelledJobs()">Didn't Work Out</h3>
       <div class="cancelled-job" ng-repeat="job in cancelledJobs() | orderBy: 'createdAt'">
         <div ng-include="'views/partials/jobCancelled.html'"></div>
       </div>
     </div>
-  
   </div>
+
+  <div class="row spacer-1">
+    <div class="col-md-12">
+      <div ng-repeat="job in activeJobs() | orderBy:order:true ">
+        <div ng-include="'views/partials/jobForm.html'"></div>
+      </div> <!-- end for job -->
+    </div>
+  </div>
+
 </div>

@@ -7,3 +7,19 @@ html body footer {
 html body footer.well {
   margin-bottom: 0;
 }
+
+html body .spacer {
+  margin-top: 0.5em;
+}
+
+html body .spacer-1 {
+  margin-top: 1em;
+}
+
+html body .spacer-2 {
+  margin-top: 2em;
+}
+
+html body .bs-rating {
+  font-size: 20px;
+}
