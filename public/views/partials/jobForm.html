@@ -54,12 +54,14 @@
         </div>
 
         <div class="col-md-2">
-          <button type="button" 
-                  class="btn btn-success btn-sm btn-block" 
-                  ng-click="setState(stateInfo(job.state).next)" 
-                  style="margin-top: 5px;">
-            {{ stateInfo(job.state).nextLabel }}
-          </button>
+          <div ng-if="job.state != 'accepted'">
+            <button type="button"
+                    class="btn btn-success btn-sm btn-block"
+                    ng-click="setState(stateInfo(job.state).next)"
+                    style="margin-top: 5px;">
+              {{ stateInfo(job.state).nextLabel }}
+            </button>
+          </div>
         </div>
         <div class="col-md-2">
           <button type="button" 

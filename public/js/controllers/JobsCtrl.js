@@ -3,19 +3,19 @@ angular.module('JobsCtrl', [])
     var _activeJobs, _cancelledJobs;
     $scope.formData = {};
     $scope.states = JobService.getStates();
-    $scope.filter = 'all';
-    $scope.order = 'createdAt';
+    $scope.filter = 'active';
+    $scope.order = 'progress';
     $scope.detailIds = [];
 
     $scope.buttons = {
-      filters: false
+      filters: false,
+      buttons: false
     };
     
     JobService.index()
       .success(function(data){
         $scope.jobs = data;
-        _activeJobs = $filter('jobstate')($scope.jobs, 'active');
-        _cancelledJobs = $filter('jobstate')($scope.jobs, 'cancelled');
+        $scope.refreshJobs();
       })
       .error(function(data){
         console.log("error: " + data);
@@ -33,6 +33,11 @@ angular.module('JobsCtrl', [])
       }
     }
 
+    $scope.refreshJobs = function(){
+      _activeJobs = $filter('jobstate')($scope.jobs, $scope.filter);
+      _cancelledJobs = $filter('jobstate')($scope.jobs, 'cancelled');
+    }
+
     $scope.activeJobs = function(){
       return _activeJobs;
     }
@@ -47,7 +52,7 @@ angular.module('JobsCtrl', [])
           $scope.formData = {};
           $scope.jobs.push(data);
           $scope.detailIds.push(data._id);
-          _activeJobs = $filter('jobstate')($scope.jobs, 'active');
+          $scope.refreshJobs();
         })
         .error(function(data){
           console.log("error: " + data)
@@ -58,39 +63,51 @@ angular.module('JobsCtrl', [])
       JobService.delete(id)
         .success(function(data){
           $scope.jobs = $filter('filter')($scope.jobs, {_id: '!' + id});
-          _activeJobs = $filter('jobstate')($scope.jobs, 'active');
-          _cancelledJobs = $filter('jobstate')($scope.jobs, 'cancelled');
+          $scope.refreshJobs();
         })
         .error(function(data){
           console.log("error: " + data);
         })
     }
 
+    $scope.updateJob = function(jobData){
+      JobService.update(jobData);
+    }
+
     $scope.stateNames = function(){
       return _.keys($scope.states);
     }
 
-    $scope.filterState = function(filter, button){
+    $scope.filterState = function(_filter, button){
       if(!_.empty(button)){
         $scope.buttons[button] = false;
       }
-      _activeJobs = $filter('jobstate')($scope.jobs, filter);
+      $scope.filter = _filter;
+      $scope.refreshJobs();
     }
 
     $scope.setOrder = function(_order, button){
       if(!_.empty(button)){
         $scope.buttons[button] = false;
       }
-      
-      if(_order == 'progress'){
-        $scope.order = function(_job){
-          return _.indexOf(
-            _.keys(JobService.getStates()),
-            _job.state
-          );
-        }
-      } else {
-        $scope.order = _order;
+
+      switch(_order){
+        case 'progress':
+          $scope.order = function(_job){
+            return _.indexOf(
+              _.keys(JobService.getStates()),
+              _job.state
+            );
+          };
+          break;
+        case 'awesomeness':
+          $scope.order = function(_job){
+            if(_.empty(_job.awesomeness)) { return 0; }
+            return _job.awesomeness;
+          };
+          break;
+        default:
+          $scope.order = _order;
       }
     }
 });

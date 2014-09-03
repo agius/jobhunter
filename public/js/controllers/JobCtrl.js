@@ -23,14 +23,13 @@ angular.module('JobCtrl', [])
       }
     }
 
-    $scope.updateJob = function(){
-      JobService.update($scope.job);
-    }
-
     $scope.setUpdate = function(newVal, oldVal){
       if (timeout) $timeout.cancel(timeout);
       if(newVal != oldVal){
-        timeout = $timeout($scope.updateJob, secondsToWaitBeforeSave * 1000);
+        var callback = function(){
+          $scope.updateJob($scope.job);
+        }
+        timeout = $timeout(callback, secondsToWaitBeforeSave * 1000);
       }
     }
 
@@ -41,6 +40,7 @@ angular.module('JobCtrl', [])
       // so don't wait
       if(oldState == 'cancelled' || newState == 'cancelled'){
         JobService.update($scope.job);
+        $scope.refreshJobs();
       }
     }
 
