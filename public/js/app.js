@@ -4,7 +4,8 @@ angular.module('job-hunter', [
   'xeditable',
   'ui.bootstrap',
   'JobService',
-  'JobHunterFilters',
+  'StateFilter',
+  'CapitalizeFilter',
   'MainCtrl',
   'JobsCtrl',
   'JobCtrl'

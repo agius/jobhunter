@@ -3,14 +3,33 @@ angular.module('JobsCtrl', [])
     var _activeJobs, _cancelledJobs;
     $scope.formData = {};
     $scope.states = JobService.getStates();
+    $scope.query = '';
     $scope.filter = 'active';
-    $scope.order = 'progress';
+    $scope.orderLabel = 'progress';
+    $scope.reverse = true;
     $scope.detailIds = [];
 
     $scope.buttons = {
       filters: false,
       buttons: false
     };
+
+    $scope.orders = {
+      created: 'createdAt',
+      updated: 'updatedAt',
+      progress: function(_job){
+        return _.indexOf(
+          _.keys(JobService.getStates()),
+          _job.state
+        );
+      },
+      awesomeness: function(_job){
+        if(_.empty(_job.awesomeness)) { return 0; }
+        return _job.awesomeness;
+      }
+    };
+
+    $scope.order = $scope.orders['progress'];
     
     JobService.index()
       .success(function(data){
@@ -33,6 +52,16 @@ angular.module('JobsCtrl', [])
       }
     }
 
+    $scope.$watch('query', function(newVal, oldVal){
+      if(_.empty(newVal)){
+        $scope.refreshJobs();
+        return;
+      }
+      if(newVal != oldVal){
+        _activeJobs = $filter('filter')(_activeJobs, {name: $scope.query});
+      }
+    });
+
     $scope.refreshJobs = function(){
       _activeJobs = $filter('jobstate')($scope.jobs, $scope.filter);
       _cancelledJobs = $filter('jobstate')($scope.jobs, 'cancelled');
@@ -52,7 +81,7 @@ angular.module('JobsCtrl', [])
           $scope.formData = {};
           $scope.jobs.push(data);
           $scope.detailIds.push(data._id);
-          $scope.refreshJobs();
+          _activeJobs.unshift(data);
         })
         .error(function(data){
           console.log("error: " + data)
@@ -86,28 +115,27 @@ angular.module('JobsCtrl', [])
       $scope.refreshJobs();
     }
 
+    $scope.direction = function(label, current){
+      if(label == $scope.orderLabel){
+        if(current){ return $scope.reverse ? 'down' : 'up'; }
+        return $scope.reverse ? 'up' : 'down';
+      }
+      return 'down';
+    }
+
     $scope.setOrder = function(_order, button){
       if(!_.empty(button)){
         $scope.buttons[button] = false;
       }
-
-      switch(_order){
-        case 'progress':
-          $scope.order = function(_job){
-            return _.indexOf(
-              _.keys(JobService.getStates()),
-              _job.state
-            );
-          };
-          break;
-        case 'awesomeness':
-          $scope.order = function(_job){
-            if(_.empty(_job.awesomeness)) { return 0; }
-            return _job.awesomeness;
-          };
-          break;
-        default:
-          $scope.order = _order;
+      
+      if(_order == $scope.orderLabel){
+        $scope.reverse = !$scope.reverse;
+        return;
+      } else {
+        $scope.reverse = true;
       }
+
+      $scope.orderLabel = _order;
+      $scope.order = $scope.orders[_order];
     }
 });

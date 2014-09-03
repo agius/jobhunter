@@ -1,4 +1,4 @@
-angular.module('JobHunterFilters', []).filter('jobstate', function($filter){
+angular.module('StateFilter', []).filter('jobstate', function($filter){
   return function(jobs, state){
     var out = [];
     switch(state){
